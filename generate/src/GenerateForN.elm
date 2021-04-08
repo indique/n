@@ -247,7 +247,7 @@ toIntAnn =
 
 lastN : Int
 lastN =
-    192
+    160
 
 
 viewNModule : Ui.Element msg
@@ -273,7 +273,7 @@ nModule =
                     , markdown "If a type alias is not fully expanded after ~192 tries,"
                     , markdown "- the compilation stops"
                     , markdown "- the elm-stuff can corrupt"
-                    , markdown "## at least"
+                    , markdown "## plus n"
                     , docTagsFrom NAtLeast declarations
                     , markdown "## exact"
                     , docTagsFrom NExact declarations
@@ -282,14 +282,23 @@ nModule =
     , imports =
         []
     , declarations =
+        let
+            plusNComment n =
+                [ markdown
+                    (String.fromInt n
+                        ++ " + some natural number `n`. This is at least "
+                        ++ String.fromInt n
+                        ++ "."
+                    )
+                ]
+        in
         [ [ localTypeDecl "S" [ "n" ]
                 [ ( "S", [ typed "Never" [] ] ) ]
           , localTypeDecl "Z" []
                 [ ( "Z", [ typed "Never" [] ] ) ]
           ]
         , [ packageExposedAliasDecl NAtLeast
-                [ markdown "1 + some n, which is at least 1."
-                ]
+                (plusNComment 1)
                 "Nat1Plus"
                 [ "n" ]
                 (typed "S" [ typeVar "n" ])
@@ -298,17 +307,12 @@ nModule =
             |> List.map
                 (\n ->
                     packageExposedAliasDecl NAtLeast
-                        [ markdown
-                            (String.fromInt n
-                                ++ " + some n, which is at least "
-                                ++ String.fromInt n
-                                ++ "."
-                            )
-                        ]
+                        (plusNComment n)
                         ("Nat" ++ String.fromInt n ++ "Plus")
                         [ "n" ]
-                        (natXPlusAnn (n - 1)
-                            (typed "S" [ typeVar "n" ])
+                        (List.repeat n ()
+                            |> List.foldl
+                                (\() after-> typed "S" [ after ]) (typeVar "n")
                         )
                 )
         , [ packageExposedAliasDecl NExact
@@ -318,7 +322,7 @@ nModule =
                 []
                 (typed "Z" [])
           ]
-        , List.range 1 192
+        , List.range 1 lastN
             |> List.map
                 (\n ->
                     packageExposedAliasDecl NExact
