@@ -1,23 +1,8 @@
-## Contribute
-
-**Contributing is appreciated! 💙**
-
-- Changes may be suggested through pull requests.
-- To discuss major changes, open up a feature request issue.
-
-## What you can do
-
-- share your thoughts
-- note: `N` is [generated using elm](generate/src/GenerateForN.elm)
-
-If you have questions, don't hesitate to ask (e.g. start a discussion in github)!
-
-### Summary Guide
+> **Moved into [bounded-nat](https://package.elm-lang.org/packages/lue-bird/elm-bounded-nat/latest/).**
 
 commits look like this:
 > do details, make other details & this
 
-#### Category
 | mark     | means   |
 | :------- | :------ |
 | + ...    | add     |

@@ -1,3 +1,19 @@
+> **Moved into [bounded-nat](https://package.elm-lang.org/packages/lue-bird/elm-bounded-nat/latest/).**
+
+```elm
+type alias Nat192Plus more =
+    S (S ... (S more)...)
+```
+
+improved compiling performance drastically over
+
+```elm
+type alias Nat192Plus more =
+    Nat191Plus (S more)
+```
+
+-------
+
 This package shouldn't have to exist.
 
 It supplies the package [elm-bounded-nat](https://package.elm-lang.org/packages/lue-bird/elm-bounded-nat/latest/) with shortened names.
@@ -5,21 +21,21 @@ It supplies the package [elm-bounded-nat](https://package.elm-lang.org/packages/
 A natural number type could be build like this:
 
 ```elm
-module N exposing (..)
+module N exposing (...)
 
-type S more = --...
-type Z = --...
+type S more = ...
+type Z = ...
 
 type alias Nat1Plus more =
     S more
 
 type alias Nat2Plus more =
-    S (Nat1Plus more)
+    Nat1Plus (S more)
 
--- ...
+...
 
 type alias Nat192Plus more =
-    S (Nat191Plus more)
+    Nat191Plus (S more)
 ```
 
 Elm cashes this in `elm-stuff` like this:
@@ -44,11 +60,6 @@ As a result, `elm-stuff` is likely to corrupt & the compilation is slow.
 
 What could shorten it down?
 - `NS` `NZ` are very common, but we can't shorten these any further
-- if we did
-```elm
-type alias Nat192Plus more =
-    S (S ... (S more)...)
-```
 - `lue-birdelm-bounded-nat` fills nearly every character!
     - if we replaced every
 
